@@ -17,40 +17,53 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Speedometer(),
+      home: HomePage(),
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black87,
+      appBar: AppBar(title: Text("Speedometer")),
+      body: Container(
+        margin: EdgeInsets.all(16.0),
+        child: Center(
+          child: Speedometer(),
+        ),
+      ),
     );
   }
 }
 
 class Speedometer extends StatelessWidget {
+  final speed = 75.0; // current speed in percentage
+  final highestSpeed = 90.0; // highest speed from speed record
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black87,
-      appBar: AppBar(
-        title: Text("Speedometer"),
-      ),
-      body: Container(
-        margin: EdgeInsets.all(16.0),
-        child: Center(
-          child: AspectRatio(
-            aspectRatio: 1.0,
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                CustomPaint(
-                  painter: SpeedIndicatorPainter(),
-                  child: Container(
-                    margin: EdgeInsets.all(16),
-                    child: CustomPaint(
-                      painter: SpeedometerPainter(),
-                    ),
+    return AspectRatio(
+      aspectRatio: 1.0,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return Stack(
+            fit: StackFit.expand,
+            children: [
+              CustomPaint(painter: SpeedIndicatorPainter(speed: speed)),
+              Container(
+                margin: EdgeInsets.all(constraints.maxWidth * 0.037),
+                child: CustomPaint(
+                  painter: SpeedometerPainter(
+                    speed: speed,
+                    highestSpeed: highestSpeed,
                   ),
                 ),
-              ],
-            ),
-          ),
-        ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

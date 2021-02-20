@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 
 class SpeedIndicatorPainter extends CustomPainter {
+  double speed;
+  SpeedIndicatorPainter({this.speed});
+
   @override
   void paint(Canvas canvas, Size size) {
+    final calibratedSpeed = (53 / 100) * speed;
+
     final radius = size.width / 2.0;
     final angle = (2 * pi * (3 / 4)) / 53;
     final paint = Paint()
@@ -19,7 +24,7 @@ class SpeedIndicatorPainter extends CustomPainter {
     for (int i = 0; i < 53; i++) {
       paint.color = Color.lerp(Colors.yellow, Colors.red, (i / 53));
 
-      if (i > 37) {
+      if (i > calibratedSpeed.toInt()) {
         paint.style = PaintingStyle.stroke;
         paint.color = Colors.white54;
       }
