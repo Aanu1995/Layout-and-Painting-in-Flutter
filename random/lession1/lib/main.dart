@@ -86,10 +86,13 @@ class _AppState extends State<App> {
 
     // use to slow down 5 times when pan
     double _value = degree + (rotationalChange / 5);
-    print(degree);
     setState(() {
       // convert to degree of rotation
-      degree = _value % 360;
+      degree = _value <= 0
+          ? 0
+          : _value >= 360
+              ? 360
+              : _value;
     });
   }
 }
