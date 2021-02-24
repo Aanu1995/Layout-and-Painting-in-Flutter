@@ -1,4 +1,4 @@
-package com.example.lession1
+package com.example.pan_to_rotate
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -29,18 +29,18 @@ class _AppState extends State<App> {
                   return Stack(
                     fit: StackFit.expand,
                     children: [
-                      CustomPaint(painter: MyPainter1(degree: degree)),
+                      CustomPaint(painter: CirclePainter()),
                       GestureDetector(
                         onPanUpdate: _onPanUpdate,
                         child: CustomPaint(
-                          painter: MyPainter(degree: degree),
+                          painter: ColorFillerPainter(degree: degree),
                         ),
                       ),
                       Container(
                         margin: EdgeInsets.all(50.0),
                         child: AbsorbPointer(
                           child: CustomPaint(
-                            painter: MyPainter2(degree: degree),
+                            painter: PercentagePainter(degree: degree),
                           ),
                         ),
                       ),
@@ -97,9 +97,8 @@ class _AppState extends State<App> {
   }
 }
 
-class MyPainter1 extends CustomPainter {
-  final double degree;
-  MyPainter1({this.degree});
+class CirclePainter extends CustomPainter {
+  const CirclePainter();
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -112,8 +111,9 @@ class MyPainter1 extends CustomPainter {
       ..strokeWidth = 3.0
       ..color = Colors.green;
 
-    // The two green lines
+    // paint the outside circle
     canvas.drawCircle(Offset(0, 0), radius, paint);
+    // paint the inner circle
     canvas.drawCircle(Offset(0, 0), radius - 50, paint);
     canvas.restore();
   }
@@ -124,9 +124,9 @@ class MyPainter1 extends CustomPainter {
   }
 }
 
-class MyPainter extends CustomPainter {
+class ColorFillerPainter extends CustomPainter {
   final double degree;
-  MyPainter({this.degree});
+  ColorFillerPainter({this.degree});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -153,9 +153,9 @@ class MyPainter extends CustomPainter {
   }
 }
 
-class MyPainter2 extends CustomPainter {
+class PercentagePainter extends CustomPainter {
   final double degree;
-  MyPainter2({this.degree});
+  PercentagePainter({this.degree});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -167,19 +167,17 @@ class MyPainter2 extends CustomPainter {
     Paint paint3 = Paint()
       ..style = PaintingStyle.fill
       ..color = Colors.white;
-
     canvas.drawCircle(Offset(0, 0), radius - 2, paint3);
 
     final textPainter = TextPainter(
         textAlign: TextAlign.center, textDirection: TextDirection.ltr);
 
-    final style = TextStyle(
-      fontSize: 40.0,
-      color: Colors.green,
-      fontWeight: FontWeight.bold,
-    );
+    final style = const TextStyle(
+        fontSize: 40.0, color: Colors.green, fontWeight: FontWeight.bold);
 
+    // converts degree to percentage
     final degreeToPercent = (degree * 100) / 360;
+
     textPainter.text =
         TextSpan(text: "${degreeToPercent.toStringAsFixed(0)}%", style: style);
     textPainter.layout();
