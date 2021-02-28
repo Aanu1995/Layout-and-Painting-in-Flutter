@@ -85,12 +85,12 @@ class _AppState extends State<App> {
       double verticalRotation =
           (onRightSide && panDown) || (onLeftSide && panUp)
               ? yChange
-              : yChange * -1;
+              : -yChange;
 
       double horizontalRotation =
-          (onTop && panRight) || (onBottom && panLeft) ? xChange : xChange * -1;
+          (onTop && panRight) || (onBottom && panLeft) ? xChange : -xChange;
 
-// Total computed change
+      // Total computed change
       double rotationalChange = verticalRotation + horizontalRotation;
       // double _value = degree + rotationalChange; // correct value to use
 
