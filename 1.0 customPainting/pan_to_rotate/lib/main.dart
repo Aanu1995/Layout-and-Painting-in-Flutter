@@ -110,24 +110,29 @@ class _AppState extends State<App> {
 
 class ColorFillerPainter extends CustomPainter {
   final double degree;
-  final strokeWidth;
-  ColorFillerPainter({this.degree, this.strokeWidth});
+  final double strokeWidth;
+
+  ColorFillerPainter({this.degree, this.strokeWidth}) {
+    bigStrokeWidth = strokeWidth;
+
+    bigCirclePaint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = strokeWidth
+      ..color = Colors.green;
+
+    smallCirclePaint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = strokeWidth - 10
+      ..color = Colors.white;
+  }
+
+  Paint bigCirclePaint;
+  Paint smallCirclePaint;
+  double bigStrokeWidth;
 
   @override
   void paint(Canvas canvas, Size size) {
     final radius = size.width / 2;
-    final bigStrokeWidth = strokeWidth;
-    final smallStrokeWidth = strokeWidth - 10;
-
-    Paint paint = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = bigStrokeWidth
-      ..color = Colors.green;
-
-    Paint smallCirclePaint = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = smallStrokeWidth
-      ..color = Colors.white;
 
     canvas.save();
     canvas.translate(radius, radius);
@@ -135,7 +140,7 @@ class ColorFillerPainter extends CustomPainter {
     final newRadius = radius - (bigStrokeWidth / 2);
 
     // paint the outside circle
-    canvas.drawCircle(Offset(0, 0), newRadius, paint);
+    canvas.drawCircle(Offset(0, 0), newRadius, bigCirclePaint);
     // paint the inner circle
     canvas.drawCircle(Offset(0, 0), newRadius, smallCirclePaint);
 
@@ -146,7 +151,7 @@ class ColorFillerPainter extends CustomPainter {
     canvas.rotate(-pi / 2);
 
     canvas.drawArc(Rect.fromCircle(center: Offset(0, 0), radius: newRadius), 0,
-        angle, false, paint);
+        angle, false, bigCirclePaint);
 
     canvas.restore();
 
@@ -170,8 +175,8 @@ class ColorFillerPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
+  bool shouldRepaint(covariant ColorFillerPainter oldDelegate) {
+    return oldDelegate.degree != degree;
   }
 }
 
@@ -179,6 +184,16 @@ class BallPainter extends CustomPainter {
   final double degree;
   final strokeWidth;
   BallPainter({this.degree, this.strokeWidth});
+
+  Paint paint1 = Paint()
+    ..style = PaintingStyle.fill
+    ..strokeCap = StrokeCap.round
+    ..color = Colors.white;
+
+  Paint paint2 = Paint()
+    ..style = PaintingStyle.fill
+    ..strokeCap = StrokeCap.round
+    ..color = Colors.green;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -191,24 +206,15 @@ class BallPainter extends CustomPainter {
 
     canvas.rotate(angle);
 
-    Paint paint = Paint()
-      ..style = PaintingStyle.fill
-      ..strokeCap = StrokeCap.round
-      ..color = Colors.green;
-    Paint paint1 = Paint()
-      ..style = PaintingStyle.fill
-      ..strokeCap = StrokeCap.round
-      ..color = Colors.white;
-
     final circleRadius = strokeWidth / 2;
     canvas.drawCircle(Offset(0, -radius + circleRadius), circleRadius, paint1);
-    canvas.drawCircle(Offset(10, -radius + circleRadius), circleRadius, paint);
+    canvas.drawCircle(Offset(10, -radius + circleRadius), circleRadius, paint2);
 
     canvas.restore();
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
+  bool shouldRepaint(covariant BallPainter oldDelegate) {
+    return oldDelegate.degree != degree;
   }
 }
