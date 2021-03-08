@@ -1,13 +1,11 @@
+import 'package:center_widget/aligned_colored_box.dart';
 import 'package:flutter/material.dart';
-
-import 'custom_widgets.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -25,12 +23,15 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomPadding(
-        padding: EdgeInsets.all(50.0),
-        child: Container(
-          height: 100.0,
-          width: 100.0,
-          color: Colors.red,
+      body: AlignedColoredBox(
+        color: Colors.teal,
+        alignment: Alignment.center,
+        child: Text(
+          "Hello World",
+          style: TextStyle(
+            fontSize: 18.0,
+            color: Colors.white,
+          ),
         ),
       ),
     );
