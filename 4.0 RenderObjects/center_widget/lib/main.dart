@@ -23,6 +23,8 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // The widget gives alignment to the child and also provide color property
+      // to fill the screen
       body: AlignedColoredBox(
         color: Colors.teal,
         alignment: Alignment.center,
